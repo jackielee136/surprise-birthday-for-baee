@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Happy Birthday ❤️</title>
+  <title>Countdown to 12/12 🎂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
@@ -19,48 +19,38 @@
       justify-content: center;
       background: radial-gradient(circle at top, #ffdee9 0%, #b5fffc 100%);
       color: #222;
+      overflow: hidden;
     }
 
     .container {
       width: 100%;
       max-width: 900px;
       padding: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .card {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 24px;
-      padding: 24px 20px 28px;
+      padding: 28px 22px 30px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "❤️";
-      position: absolute;
-      font-size: 80px;
-      opacity: 0.1;
-      right: -10px;
-      top: -15px;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
       font-size: 28px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .subtitle {
-      text-align: center;
-      color: #777;
-      margin-bottom: 20px;
+      color: #666;
       font-size: 14px;
+      margin-bottom: 18px;
     }
 
-    /* COUNTDOWN SECTION */
+    /* COUNTDOWN */
     #countdown-section {
-      text-align: center;
       margin-top: 10px;
     }
 
@@ -68,8 +58,8 @@
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin: 20px 0;
       flex-wrap: wrap;
+      margin: 18px 0 10px;
     }
 
     .time-box {
@@ -79,37 +69,35 @@
       min-width: 70px;
     }
 
-    .time-box span {
-      display: block;
-    }
-
     .time-number {
+      display: block;
       font-size: 22px;
       font-weight: 700;
     }
 
     .time-label {
-      font-size: 12px;
+      display: block;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #a16207;
     }
 
-    .small-text {
+    .note {
       font-size: 13px;
       color: #555;
       margin-top: 6px;
+      line-height: 1.4;
     }
 
-    /* CELEBRATION SECTION */
+    /* CELEBRATION */
     #celebration-section {
       display: none;
-      text-align: center;
       animation: fadeIn 1s ease-out forwards;
     }
 
     #celebration-title {
-      font-size: 30px;
+      font-size: 32px;
       margin-bottom: 8px;
     }
 
@@ -122,74 +110,51 @@
     #message {
       font-size: 15px;
       line-height: 1.6;
+      white-space: pre-line;
       margin-bottom: 20px;
-      padding: 0 8px;
-      white-space: pre-line; /* giữ xuống dòng */
+      padding: 0 10px;
     }
 
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      cursor: pointer;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin: 6px;
+    .photo {
+      margin-top: 6px;
     }
 
-    .btn-primary {
-      background: linear-gradient(to right, #fb7185, #ec4899);
-      color: white;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: #ec4899;
-      border: 1px solid #f9a8d4;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-
-    .gallery {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 16px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    .photo img {
+      max-width: 260px;
+      width: 80%;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FIREWORKS CANVAS */
+    #fireworks-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
     }
 
     @media (min-width: 768px) {
       h1 { font-size: 32px; }
       #celebration-title { font-size: 36px; }
-      .card { padding: 28px 26px 32px; }
     }
   </style>
 </head>
 <body>
 
+<canvas id="fireworks-canvas"></canvas>
+
 <div class="container">
   <div class="card">
-    <h1>For my beloved girl 💕</h1>
-    <p class="subtitle">Một chiếc thiệp sinh nhật nhỏ nhưng đầy tình yêu của anh dành cho em</p>
+    <h1>Countdown to 12/12 🎂</h1>
+    <p class="subtitle">Anh đang đếm từng giây đến 00:00 ngày 12/12/2025 – ngày đặc biệt của em.</p>
 
-    <!-- COUNTDOWN MODE -->
+    <!-- COUNTDOWN -->
     <section id="countdown-section">
       <p>Chỉ còn...</p>
       <div class="countdown">
@@ -210,66 +175,51 @@
           <span class="time-label">Giây</span>
         </div>
       </div>
-      <p class="small-text">
-        Anh đang đếm từng giây để đến sinh nhật em.  
-        Khi đồng hồ về 0, cả trang này sẽ biến thành một thế giới chỉ dành cho em. ✨
+      <p class="note">
+        Khi đồng hồ về 0, trang này sẽ biến thành thiệp sinh nhật bí mật dành riêng cho em. 💖
       </p>
-      <button class="btn btn-outline" id="test-btn">👉 Thử xem chế độ sinh nhật</button>
     </section>
 
-    <!-- CELEBRATION MODE -->
+    <!-- CELEBRATION -->
     <section id="celebration-section">
       <div id="celebration-title">HAPPY BIRTHDAY 🎉</div>
-      <div id="celebration-name">Gửi đến: Em yêu của anh</div>
+      <div id="celebration-name">Gửi em – cô gái 12/12 của anh</div>
       <div id="message">
-Chúc mừng sinh nhật cô gái đặc biệt nhất trong cuộc đời anh.  
+Chúc mừng sinh nhật em.  
 
-Cảm ơn em vì đã bước vào cuộc sống của anh, vì những ngày mình cãi nhau nhưng vẫn chọn ở lại, 
-vì mọi nụ cười, mọi lần em nhìn anh và nói: "Anh khùng quá" nhưng vẫn thương.
+Từ ngày em xuất hiện, lịch của anh có thêm một mốc rất quan trọng:
+không chỉ là ngày 12/12 trên màn hình,
+mà là ngày một người đặc biệt bước vào cuộc đời anh.
 
-Dù ngày trên giấy khai sinh hay ngày "trong tim" mới là sinh nhật,
-thì với anh, chỉ cần là ngày có em, anh đều muốn biến nó thành một ngày thật đẹp.  
+Dù là sinh nhật “đúng ngày” hay “trên giấy khai sinh”,
+thì với anh, mỗi khoảnh khắc được ở bên em
+đều là một món quà.
 
-Hy vọng mỗi lần em mở lại trang này, em sẽ nhớ là:
-luôn có một thằng con trai ở đây, âm thầm đứng sau cổ vũ, tin em, thương em, 
-và muốn đi cùng em lâu nhất có thể. 💖
+Hy vọng khi em mở trang này,
+em sẽ nhớ rằng có một người luôn âm thầm đứng sau,
+tin em, thương em, và mong được đi cùng em thật lâu. 💗
       </div>
 
-      <button class="btn btn-primary" id="music-btn">🎵 Bấm để bật nhạc</button>
-
-      <div class="gallery">
-        <!-- THAY SRC BẰNG LINK ẢNH CỦA HAI BẠN (có thể là link Instagram, Imgur, v.v.) -->
-        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us 1" />
-        <img src="https://images.pexels.com/photos/169203/pexels-photo-169203.jpeg" alt="Us 2" />
-        <img src="https://images.pexels.com/photos/1449794/pexels-photo-1449794.jpeg" alt="Us 3" />
-        <img src="https://images.pexels.com/photos/1024975/pexels-photo-1024975.jpeg" alt="Us 4" />
-        <img src="https://images.pexels.com/photos/1487074/pexels-photo-1487074.jpeg" alt="Us 5" />
-        <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg" alt="Us 6" />
+      <div class="photo">
+        <!-- ĐỔI THÀNH ẢNH CỦA HAI BẠN -->
+        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us together" />
       </div>
     </section>
-
-    <!-- NHẠC NỀN: đổi file mp3 theo ý bạn -->
-    <audio id="bg-music" loop>
-      <!-- Đặt link file mp3 của bạn ở đây -->
-      <!-- Ví dụ: <source src="your-song.mp3" type="audio/mpeg" /> -->
-    </audio>
   </div>
 </div>
 
 <script>
-  // ==== CONFIG: ĐỔI NGÀY SINH NHẬT TẠI ĐÂY ====
-  // Ví dụ: "2025-01-12T00:00:00" cho 0h ngày 12/01/2025
-  const birthday = new Date("2025-01-12T00:00:00");
+  // ========== COUNTDOWN CONFIG ==========
+  // new Date(year, monthIndex, day, hour, minute, second)
+  // Tháng 11 = Tháng 12 (vì JS đếm từ 0)
+  const targetDate = new Date(2025, 11, 12, 0, 0, 0); // 00:00 12/12/2025
 
   const countdownSection = document.getElementById("countdown-section");
   const celebrationSection = document.getElementById("celebration-section");
-  const music = document.getElementById("bg-music");
-  const musicBtn = document.getElementById("music-btn");
-  const testBtn = document.getElementById("test-btn");
 
   function updateCountdown() {
     const now = new Date().getTime();
-    const distance = birthday.getTime() - now;
+    const distance = targetDate.getTime() - now;
 
     if (distance <= 0) {
       startCelebration();
@@ -293,29 +243,79 @@ và muốn đi cùng em lâu nhất có thể. 💖
   function startCelebration() {
     countdownSection.style.display = "none";
     celebrationSection.style.display = "block";
+    startFireworks();
   }
 
   const countdownInterval = setInterval(updateCountdown, 1000);
-  updateCountdown(); // chạy lần đầu
+  updateCountdown();
 
-  // Button bật nhạc (tránh lỗi autoplay)
-  musicBtn.addEventListener("click", () => {
-    if (music && music.paused) {
-      music.play().catch(() => {
-        alert("Trình duyệt chặn autoplay. Hãy thử lại nhé ❤️");
+  // ========== FIREWORKS ==========
+  const canvas = document.getElementById("fireworks-canvas");
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+  let fireworksRunning = false;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  function createFirework() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height * 0.6; // phía trên
+    const colors = ["#fde68a", "#fca5a5", "#f9a8d4", "#a5b4fc", "#6ee7b7"];
+
+    const numParticles = 40 + Math.floor(Math.random() * 20);
+    for (let i = 0; i < numParticles; i++) {
+      const angle = (Math.PI * 2 * i) / numParticles;
+      const speed = 2 + Math.random() * 3;
+      particles.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 1,
+        radius: 2 + Math.random() * 2,
+        color: colors[Math.floor(Math.random() * colors.length)]
       });
-      musicBtn.textContent = "🎵 Đang phát nhạc cho em";
-    } else if (music) {
-      music.pause();
-      musicBtn.textContent = "🎵 Bấm để bật nhạc";
     }
-  });
+  }
 
-  // Button test chế độ sinh nhật
-  testBtn.addEventListener("click", () => {
-    startCelebration();
-    clearInterval(countdownInterval);
-  });
+  function updateFireworks() {
+    if (!fireworksRunning) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.03; // gravity
+      p.alpha -= 0.015;
+
+      if (p.alpha <= 0) {
+        particles.splice(index, 1);
+      } else {
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.restore();
+      }
+    });
+
+    requestAnimationFrame(updateFireworks);
+  }
+
+  function startFireworks() {
+    fireworksRunning = true;
+    // Tạo pháo hoa định kỳ
+    setInterval(createFirework, 500);
+    updateFireworks();
+  }
 </script>
 
 </body>
