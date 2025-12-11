@@ -230,9 +230,7 @@
       <div id="celebration-name">Gửi em – cô gái 12/12 của anh</div>
       <div id="message"></div>
 
-      <div class="photo">
-        <img src="anh1.jpg" alt="ảnh 1" />
-      </div>
+    
     </section>
   </div>
 </div>
@@ -400,23 +398,30 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
   ];
 
   function startFloatingPhotos() {
-    floatingContainer.innerHTML = "";
-    floatingImages.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      img.className = "floating-photo";
+  floatingContainer.innerHTML = "";
 
-      const left = 5 + Math.random() * 90;
-      const delay = Math.random() * 5;
-      const duration = 12 + Math.random() * 6;
+  const count = floatingImages.length;
+  // Chia đều 90% chiều ngang cho N ảnh, chừa 5% hai bên
+  const laneWidth = 90 / count;
 
-      img.style.left = left + "%";
-      img.style.animationDuration = duration + "s";
-      img.style.animationDelay = delay + "s";
+  floatingImages.forEach((src, index) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "floating-photo";
 
-      floatingContainer.appendChild(img);
-    });
-  }
+    // Mỗi ảnh một “làn” riêng, không trùng nhau
+    const centerOfLane = 5 + laneWidth * index + laneWidth / 2;
+    const delay = Math.random() * 5;
+    const duration = 12 + Math.random() * 6;
+
+    img.style.left = centerOfLane + "%";
+    img.style.animationDuration = duration + "s";
+    img.style.animationDelay = delay + "s";
+
+    floatingContainer.appendChild(img);
+  });
+}
+
 
   // MUSIC
   const music = document.getElementById("bg-music");
