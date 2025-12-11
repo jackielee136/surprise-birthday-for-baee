@@ -395,32 +395,60 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
     "anh8.jpg",
     "anh9.jpg",
     "anh10.jpg"
+    "anh11.jpg",
+    "anh12.jpg",
+    "anh13.jpg",
+    "anh14.jpg",
+    "anh15.jpg",
+    "anh16.jpg",
+    "anh17.jpg",
+    "anh18.jpg",
+    "anh19.jpg",
+    "anh20.jpg"
   ];
 
   function startFloatingPhotos() {
   floatingContainer.innerHTML = "";
 
-  const count = floatingImages.length;
-  // Chia đều 90% chiều ngang cho N ảnh, chừa 5% hai bên
-  const laneWidth = 90 / count;
+  const MAX_VISIBLE = 14;      // tối đa bao nhiêu ảnh bay cùng lúc
+  const LANES = 8;             // chia màn hình thành 8 lane ngang
+  const imgs = [...floatingImages];
 
-  floatingImages.forEach((src, index) => {
+  // Nếu nhiều hơn MAX_VISIBLE thì random chọn bớt
+  if (imgs.length > MAX_VISIBLE) {
+    imgs.sort(() => Math.random() - 0.5);
+  }
+  const toShow = imgs.slice(0, Math.min(MAX_VISIBLE, imgs.length));
+
+  const laneWidth = 90 / LANES;
+  const laneCenters = Array.from({ length: LANES }, (_, i) =>
+    5 + laneWidth * i + laneWidth / 2
+  );
+
+  toShow.forEach((src, index) => {
     const img = document.createElement("img");
     img.src = src;
     img.className = "floating-photo";
 
-    // Mỗi ảnh một “làn” riêng, không trùng nhau
-    const centerOfLane = 5 + laneWidth * index + laneWidth / 2;
+    // chọn lane theo vòng tròn: 0→1→2→...→LANES-1→0→...
+    const laneIndex = index % LANES;
+    let center = laneCenters[laneIndex];
+
+    // cho lệch nhẹ để trông tự nhiên
+    const jitter = (Math.random() - 0.5) * laneWidth * 0.4;
+    center = Math.min(95, Math.max(5, center + jitter));
+
     const delay = Math.random() * 5;
     const duration = 12 + Math.random() * 6;
 
-    img.style.left = centerOfLane + "%";
+    img.style.left = center + "%";
     img.style.animationDuration = duration + "s";
     img.style.animationDelay = delay + "s";
 
     floatingContainer.appendChild(img);
   });
 }
+
 
 
   // MUSIC
