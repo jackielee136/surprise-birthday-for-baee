@@ -113,11 +113,7 @@
       white-space: pre-line;
       margin-bottom: 20px;
       padding: 0 10px;
-      min-height: 120px; /* để khung đỡ nhảy khi gõ chữ */
-    }
-
-    .photo {
-      margin-top: 6px;
+      min-height: 120px;
     }
 
     .photo img {
@@ -190,11 +186,6 @@
       transform: translateY(-1px);
       opacity: 0.96;
     }
-
-    @media (min-width: 768px) {
-      h1 { font-size: 32px; }
-      #celebration-title { font-size: 36px; }
-    }
   </style>
 </head>
 <body>
@@ -230,9 +221,7 @@
           <span class="time-label">Giây</span>
         </div>
       </div>
-      <p class="note">
-        Khi đồng hồ về 0, trang này sẽ biến thành thiệp sinh nhật bí mật dành riêng cho em. 💖
-      </p>
+      <p class="note">Đếm ngược đến thời khắc dành riêng cho em… 💖</p>
     </section>
 
     <!-- CELEBRATION -->
@@ -242,31 +231,27 @@
       <div id="message"></div>
 
       <div class="photo">
-        <!-- ĐỔI THÀNH ẢNH CỦA HAI BẠN -->
-        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us together" />
+        <img src="anh1.jpg" alt="ảnh 1" />
       </div>
     </section>
   </div>
 </div>
 
-<!-- NHẠC: ĐỔI LINK FILE MP3 CỦA BẠN Ở ĐÂY -->
+<!-- NHẠC -->
 <audio id="bg-music" loop>
-  <!-- Ví dụ: <source src="your-song.mp3" type="audio/mpeg" /> -->
+  <source src="music.mp3" type="audio/mpeg" />
 </audio>
 
 <script>
-  // ========== CONFIG THỜI GIAN ==========
-  // Thời gian thật: 00:00 12/12/2025
   const targetDate = new Date(2025, 11, 12, 0, 0, 0);
 
-  // 👉 Nếu muốn TEST nhanh (ví dụ đếm 10 giây), tạm dùng:
+  // 👉 TEST nhanh (10 giây): bật dòng này
   // const targetDate = new Date(Date.now() + 10000);
 
   const countdownSection = document.getElementById("countdown-section");
   const celebrationSection = document.getElementById("celebration-section");
   const messageEl = document.getElementById("message");
 
-  // Lời chúc hiển thị dần (có thể chỉnh lại cho đúng style của bạn)
   const fullMessage = `Chúc mừng sinh nhật em.  
 
 Từ ngày em xuất hiện, lịch của anh có thêm một mốc rất quan trọng:
@@ -296,7 +281,7 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
       } else {
         clearInterval(typeInterval);
       }
-    }, 40); // tốc độ gõ chữ (ms / ký tự)
+    }, 40);
   }
 
   function updateCountdown() {
@@ -310,9 +295,7 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
     }
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -333,7 +316,7 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
   const countdownInterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // ========== FIREWORKS ==========
+  // FIREWORKS
   const canvas = document.getElementById("fireworks-canvas");
   const ctx = canvas.getContext("2d");
   let particles = [];
@@ -348,16 +331,16 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
 
   function createFirework() {
     const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height * 0.6; // phía trên
+    const y = Math.random() * canvas.height * 0.6;
     const colors = ["#fde68a", "#fca5a5", "#f9a8d4", "#a5b4fc", "#6ee7b7"];
 
-    const numParticles = 40 + Math.floor(Math.random() * 20);
-    for (let i = 0; i < numParticles; i++) {
-      const angle = (Math.PI * 2 * i) / numParticles;
+    const num = 40 + Math.floor(Math.random() * 20);
+    for (let i = 0; i < num; i++) {
+      const angle = (Math.PI * 2 * i) / num;
       const speed = 2 + Math.random() * 3;
       particles.push({
-        x: x,
-        y: y,
+        x,
+        y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         alpha: 1,
@@ -372,14 +355,14 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach((p, index) => {
+    particles.forEach((p, i) => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.03; // gravity
+      p.vy += 0.03;
       p.alpha -= 0.015;
 
       if (p.alpha <= 0) {
-        particles.splice(index, 1);
+        particles.splice(i, 1);
       } else {
         ctx.save();
         ctx.globalAlpha = p.alpha;
@@ -400,34 +383,31 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
     updateFireworks();
   }
 
-  // ========== FLOATING PHOTOS ==========
+  // FLOATING PHOTOS
   const floatingContainer = document.getElementById("floating-photos-container");
 
-  // THAY 10 LINK ẢNH CỦA HAI BẠN Ở ĐÂY
   const floatingImages = [
-    "https://images.pexels.com/photos/169203/pexels-photo-169203.jpeg",
-    "https://images.pexels.com/photos/1449794/pexels-photo-1449794.jpeg",
-    "https://images.pexels.com/photos/1024975/pexels-photo-1024975.jpeg",
-    "https://images.pexels.com/photos/1487074/pexels-photo-1487074.jpeg",
-    "https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg",
-    "https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg",
-    "https://images.pexels.com/photos/3656335/pexels-photo-3656335.jpeg",
-    "https://images.pexels.com/photos/5724875/pexels-photo-5724875.jpeg",
-    "https://images.pexels.com/photos/3075226/pexels-photo-3075226.jpeg",
-    "https://images.pexels.com/photos/5732994/pexels-photo-5732994.jpeg"
+    "anh1.jpg",
+    "anh2.jpg",
+    "anh3.jpg",
+    "anh4.jpg",
+    "anh5.jpg",
+    "anh6.jpg",
+    "anh7.jpg",
+    "anh8.jpg",
+    "anh9.jpg",
+    "anh10.jpg"
   ];
 
   function startFloatingPhotos() {
     floatingContainer.innerHTML = "";
-    const count = floatingImages.length;
-
-    for (let i = 0; i < count; i++) {
+    floatingImages.forEach(src => {
       const img = document.createElement("img");
-      img.src = floatingImages[i];
+      img.src = src;
       img.className = "floating-photo";
 
-      const left = 5 + Math.random() * 90; // % ngang màn hình
-      const delay = Math.random() * 5;     // trễ animation
+      const left = 5 + Math.random() * 90;
+      const delay = Math.random() * 5;
       const duration = 12 + Math.random() * 6;
 
       img.style.left = left + "%";
@@ -435,28 +415,26 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
       img.style.animationDelay = delay + "s";
 
       floatingContainer.appendChild(img);
-    }
+    });
   }
 
-  // ========== MUSIC TOGGLE ==========
+  // MUSIC
   const music = document.getElementById("bg-music");
-  const musicToggle = document.getElementById("music-toggle");
+  const toggle = document.getElementById("music-toggle");
   let isPlaying = false;
 
-  musicToggle.addEventListener("click", () => {
-    if (!music) return;
-
+  toggle.addEventListener("click", () => {
     if (!isPlaying) {
       music.play().then(() => {
         isPlaying = true;
-        musicToggle.textContent = "⏸ Tắt nhạc";
+        toggle.textContent = "⏸ Tắt nhạc";
       }).catch(() => {
-        alert("Trình duyệt đang chặn autoplay, hãy bấm lại lần nữa nhé ❤️");
+        alert("Trình duyệt chặn autoplay, thử bấm lại nhé ❤️");
       });
     } else {
       music.pause();
       isPlaying = false;
-      musicToggle.textContent = "🎵 Bật nhạc";
+      toggle.textContent = "🎵 Bật nhạc";
     }
   });
 </script>
