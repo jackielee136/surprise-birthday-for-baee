@@ -13,30 +13,43 @@
     }
 
     body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, #ffdee9 0%, #b5fffc 100%);
-      color: #222;
-      overflow: hidden;
-    }
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;      /* 👈 nội dung bám từ trên xuống, cho phép dài */
+  padding: 40px 0;              /* tạo khoảng cách trên dưới một chút */
+
+  background: radial-gradient(circle at top, #ffdee9 0%, #b5fffc 100%);
+  color: #222;
+
+  overflow-x: hidden;           /* chặn tràn ngang thôi */
+  overflow-y: auto;             /* 👈 cho phép cuộn dọc */
+}
+
 
     .container {
-      width: 100%;
-      max-width: 900px;
-      padding: 20px;
-      position: relative;
-      z-index: 3;
-    }
+  width: 100%;
+  max-width: 900px;
+  padding: 20px;
+  position: relative;
+  z-index: 3;
 
-    .card {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 24px;
-      padding: 28px 22px 30px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-      text-align: center;
-    }
+  display: flex;
+  justify-content: center; /* căn giữa theo ngang */
+}
+
+.card {
+  width: 100%;
+  max-width: 650px; /* 👈 thu nhỏ bề ngang khung trắng */
+  margin: 0 auto;
+
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  padding: 28px 22px 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
 
     h1 {
       font-size: 28px;
