@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffdee9 0%, #b5fffc 100%);
+      color: #222;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      padding: 24px 20px 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "❤️";
+      position: absolute;
+      font-size: 80px;
+      opacity: 0.1;
+      right: -10px;
+      top: -15px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    /* COUNTDOWN SECTION */
+    #countdown-section {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      background: #fef3c7;
+      padding: 10px 14px;
+      border-radius: 16px;
+      min-width: 70px;
+    }
+
+    .time-box span {
+      display: block;
+    }
+
+    .time-number {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .time-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #a16207;
+    }
+
+    .small-text {
+      font-size: 13px;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    /* CELEBRATION SECTION */
+    #celebration-section {
+      display: none;
+      text-align: center;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    #celebration-title {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    #celebration-name {
+      font-size: 18px;
+      color: #ec4899;
+      margin-bottom: 16px;
+    }
+
+    #message {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 0 8px;
+      white-space: pre-line; /* giữ xuống dòng */
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 6px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #fb7185, #ec4899);
+      color: white;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #ec4899;
+      border: 1px solid #f9a8d4;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .gallery {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 32px; }
+      #celebration-title { font-size: 36px; }
+      .card { padding: 28px 26px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>For my beloved girl 💕</h1>
+    <p class="subtitle">Một chiếc thiệp sinh nhật nhỏ nhưng đầy tình yêu của anh dành cho em</p>
+
+    <!-- COUNTDOWN MODE -->
+    <section id="countdown-section">
+      <p>Chỉ còn...</p>
+      <div class="countdown">
+        <div class="time-box">
+          <span class="time-number" id="days">0</span>
+          <span class="time-label">Ngày</span>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="hours">0</span>
+          <span class="time-label">Giờ</span>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="minutes">0</span>
+          <span class="time-label">Phút</span>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="seconds">0</span>
+          <span class="time-label">Giây</span>
+        </div>
+      </div>
+      <p class="small-text">
+        Anh đang đếm từng giây để đến sinh nhật em.  
+        Khi đồng hồ về 0, cả trang này sẽ biến thành một thế giới chỉ dành cho em. ✨
+      </p>
+      <button class="btn btn-outline" id="test-btn">👉 Thử xem chế độ sinh nhật</button>
+    </section>
+
+    <!-- CELEBRATION MODE -->
+    <section id="celebration-section">
+      <div id="celebration-title">HAPPY BIRTHDAY 🎉</div>
+      <div id="celebration-name">Gửi đến: Em yêu của anh</div>
+      <div id="message">
+Chúc mừng sinh nhật cô gái đặc biệt nhất trong cuộc đời anh.  
+
+Cảm ơn em vì đã bước vào cuộc sống của anh, vì những ngày mình cãi nhau nhưng vẫn chọn ở lại, 
+vì mọi nụ cười, mọi lần em nhìn anh và nói: "Anh khùng quá" nhưng vẫn thương.
+
+Dù ngày trên giấy khai sinh hay ngày "trong tim" mới là sinh nhật,
+thì với anh, chỉ cần là ngày có em, anh đều muốn biến nó thành một ngày thật đẹp.  
+
+Hy vọng mỗi lần em mở lại trang này, em sẽ nhớ là:
+luôn có một thằng con trai ở đây, âm thầm đứng sau cổ vũ, tin em, thương em, 
+và muốn đi cùng em lâu nhất có thể. 💖
+      </div>
+
+      <button class="btn btn-primary" id="music-btn">🎵 Bấm để bật nhạc</button>
+
+      <div class="gallery">
+        <!-- THAY SRC BẰNG LINK ẢNH CỦA HAI BẠN (có thể là link Instagram, Imgur, v.v.) -->
+        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us 1" />
+        <img src="https://images.pexels.com/photos/169203/pexels-photo-169203.jpeg" alt="Us 2" />
+        <img src="https://images.pexels.com/photos/1449794/pexels-photo-1449794.jpeg" alt="Us 3" />
+        <img src="https://images.pexels.com/photos/1024975/pexels-photo-1024975.jpeg" alt="Us 4" />
+        <img src="https://images.pexels.com/photos/1487074/pexels-photo-1487074.jpeg" alt="Us 5" />
+        <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg" alt="Us 6" />
+      </div>
+    </section>
+
+    <!-- NHẠC NỀN: đổi file mp3 theo ý bạn -->
+    <audio id="bg-music" loop>
+      <!-- Đặt link file mp3 của bạn ở đây -->
+      <!-- Ví dụ: <source src="your-song.mp3" type="audio/mpeg" /> -->
+    </audio>
+  </div>
+</div>
+
+<script>
+  // ==== CONFIG: ĐỔI NGÀY SINH NHẬT TẠI ĐÂY ====
+  // Ví dụ: "2025-01-12T00:00:00" cho 0h ngày 12/01/2025
+  const birthday = new Date("2025-01-12T00:00:00");
+
+  const countdownSection = document.getElementById("countdown-section");
+  const celebrationSection = document.getElementById("celebration-section");
+  const music = document.getElementById("bg-music");
+  const musicBtn = document.getElementById("music-btn");
+  const testBtn = document.getElementById("test-btn");
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = birthday.getTime() - now;
+
+    if (distance <= 0) {
+      startCelebration();
+      clearInterval(countdownInterval);
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = hours;
+    document.getElementById("minutes").textContent = minutes;
+    document.getElementById("seconds").textContent = seconds;
+  }
+
+  function startCelebration() {
+    countdownSection.style.display = "none";
+    celebrationSection.style.display = "block";
+  }
+
+  const countdownInterval = setInterval(updateCountdown, 1000);
+  updateCountdown(); // chạy lần đầu
+
+  // Button bật nhạc (tránh lỗi autoplay)
+  musicBtn.addEventListener("click", () => {
+    if (music && music.paused) {
+      music.play().catch(() => {
+        alert("Trình duyệt chặn autoplay. Hãy thử lại nhé ❤️");
+      });
+      musicBtn.textContent = "🎵 Đang phát nhạc cho em";
+    } else if (music) {
+      music.pause();
+      musicBtn.textContent = "🎵 Bấm để bật nhạc";
+    }
+  });
+
+  // Button test chế độ sinh nhật
+  testBtn.addEventListener("click", () => {
+    startCelebration();
+    clearInterval(countdownInterval);
+  });
+</script>
+
+</body>
+</html>
