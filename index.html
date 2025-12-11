@@ -27,11 +27,11 @@
       max-width: 900px;
       padding: 20px;
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       border-radius: 24px;
       padding: 28px 22px 30px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -113,6 +113,7 @@
       white-space: pre-line;
       margin-bottom: 20px;
       padding: 0 10px;
+      min-height: 120px; /* để khung đỡ nhảy khi gõ chữ */
     }
 
     .photo {
@@ -139,6 +140,57 @@
       z-index: 1;
     }
 
+    /* FLOATING PHOTOS */
+    #floating-photos-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: visible;
+    }
+
+    .floating-photo {
+      position: fixed;
+      bottom: -160px;
+      width: 120px;
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      animation: floatUp 14s linear infinite;
+      object-fit: cover;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(0.85); opacity: 0; }
+      10%  { opacity: 1; }
+      60%  { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.08); opacity: 0; }
+    }
+
+    /* MUSIC BUTTON */
+    .music-btn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 4;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      background: rgba(236, 72, 153, 0.9);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .music-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
     @media (min-width: 768px) {
       h1 { font-size: 32px; }
       #celebration-title { font-size: 36px; }
@@ -148,6 +200,9 @@
 <body>
 
 <canvas id="fireworks-canvas"></canvas>
+<div id="floating-photos-container"></div>
+
+<button class="music-btn" id="music-toggle">🎵 Bật nhạc</button>
 
 <div class="container">
   <div class="card">
@@ -184,8 +239,35 @@
     <section id="celebration-section">
       <div id="celebration-title">HAPPY BIRTHDAY 🎉</div>
       <div id="celebration-name">Gửi em – cô gái 12/12 của anh</div>
-      <div id="message">
-Chúc mừng sinh nhật em.  
+      <div id="message"></div>
+
+      <div class="photo">
+        <!-- ĐỔI THÀNH ẢNH CỦA HAI BẠN -->
+        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us together" />
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- NHẠC: ĐỔI LINK FILE MP3 CỦA BẠN Ở ĐÂY -->
+<audio id="bg-music" loop>
+  <!-- Ví dụ: <source src="your-song.mp3" type="audio/mpeg" /> -->
+</audio>
+
+<script>
+  // ========== CONFIG THỜI GIAN ==========
+  // Thời gian thật: 00:00 12/12/2025
+  const targetDate = new Date(2025, 11, 12, 0, 0, 0);
+
+  // 👉 Nếu muốn TEST nhanh (ví dụ đếm 10 giây), tạm dùng:
+  // const targetDate = new Date(Date.now() + 10000);
+
+  const countdownSection = document.getElementById("countdown-section");
+  const celebrationSection = document.getElementById("celebration-section");
+  const messageEl = document.getElementById("message");
+
+  // Lời chúc hiển thị dần (có thể chỉnh lại cho đúng style của bạn)
+  const fullMessage = `Chúc mừng sinh nhật em.  
 
 Từ ngày em xuất hiện, lịch của anh có thêm một mốc rất quan trọng:
 không chỉ là ngày 12/12 trên màn hình,
@@ -197,26 +279,25 @@ thì với anh, mỗi khoảnh khắc được ở bên em
 
 Hy vọng khi em mở trang này,
 em sẽ nhớ rằng có một người luôn âm thầm đứng sau,
-tin em, thương em, và mong được đi cùng em thật lâu. 💗
-      </div>
+tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
 
-      <div class="photo">
-        <!-- ĐỔI THÀNH ẢNH CỦA HAI BẠN -->
-        <img src="https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg" alt="Us together" />
-      </div>
-    </section>
-  </div>
-</div>
+  let typeIndex = 0;
+  let typeInterval;
 
-<script>
-  // ========== COUNTDOWN CONFIG ==========
-  // new Date(year, monthIndex, day, hour, minute, second)
-  // Tháng 11 = Tháng 12 (vì JS đếm từ 0)
-  //const targetDate = new Date(2025, 11, 12, 0, 0, 0); // 00:00 12/12/2025
-const targetDate = new Date(new Date().getTime() + 10 * 1000);
-  
-  const countdownSection = document.getElementById("countdown-section");
-  const celebrationSection = document.getElementById("celebration-section");
+  function startTypewriter() {
+    messageEl.textContent = "";
+    typeIndex = 0;
+    clearInterval(typeInterval);
+
+    typeInterval = setInterval(() => {
+      if (typeIndex < fullMessage.length) {
+        messageEl.textContent += fullMessage.charAt(typeIndex);
+        typeIndex++;
+      } else {
+        clearInterval(typeInterval);
+      }
+    }, 40); // tốc độ gõ chữ (ms / ký tự)
+  }
 
   function updateCountdown() {
     const now = new Date().getTime();
@@ -245,6 +326,8 @@ const targetDate = new Date(new Date().getTime() + 10 * 1000);
     countdownSection.style.display = "none";
     celebrationSection.style.display = "block";
     startFireworks();
+    startFloatingPhotos();
+    startTypewriter();
   }
 
   const countdownInterval = setInterval(updateCountdown, 1000);
@@ -313,10 +396,69 @@ const targetDate = new Date(new Date().getTime() + 10 * 1000);
 
   function startFireworks() {
     fireworksRunning = true;
-    // Tạo pháo hoa định kỳ
     setInterval(createFirework, 500);
     updateFireworks();
   }
+
+  // ========== FLOATING PHOTOS ==========
+  const floatingContainer = document.getElementById("floating-photos-container");
+
+  // THAY 10 LINK ẢNH CỦA HAI BẠN Ở ĐÂY
+  const floatingImages = [
+    "https://images.pexels.com/photos/169203/pexels-photo-169203.jpeg",
+    "https://images.pexels.com/photos/1449794/pexels-photo-1449794.jpeg",
+    "https://images.pexels.com/photos/1024975/pexels-photo-1024975.jpeg",
+    "https://images.pexels.com/photos/1487074/pexels-photo-1487074.jpeg",
+    "https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg",
+    "https://images.pexels.com/photos/556667/pexels-photo-556667.jpeg",
+    "https://images.pexels.com/photos/3656335/pexels-photo-3656335.jpeg",
+    "https://images.pexels.com/photos/5724875/pexels-photo-5724875.jpeg",
+    "https://images.pexels.com/photos/3075226/pexels-photo-3075226.jpeg",
+    "https://images.pexels.com/photos/5732994/pexels-photo-5732994.jpeg"
+  ];
+
+  function startFloatingPhotos() {
+    floatingContainer.innerHTML = "";
+    const count = floatingImages.length;
+
+    for (let i = 0; i < count; i++) {
+      const img = document.createElement("img");
+      img.src = floatingImages[i];
+      img.className = "floating-photo";
+
+      const left = 5 + Math.random() * 90; // % ngang màn hình
+      const delay = Math.random() * 5;     // trễ animation
+      const duration = 12 + Math.random() * 6;
+
+      img.style.left = left + "%";
+      img.style.animationDuration = duration + "s";
+      img.style.animationDelay = delay + "s";
+
+      floatingContainer.appendChild(img);
+    }
+  }
+
+  // ========== MUSIC TOGGLE ==========
+  const music = document.getElementById("bg-music");
+  const musicToggle = document.getElementById("music-toggle");
+  let isPlaying = false;
+
+  musicToggle.addEventListener("click", () => {
+    if (!music) return;
+
+    if (!isPlaying) {
+      music.play().then(() => {
+        isPlaying = true;
+        musicToggle.textContent = "⏸ Tắt nhạc";
+      }).catch(() => {
+        alert("Trình duyệt đang chặn autoplay, hãy bấm lại lần nữa nhé ❤️");
+      });
+    } else {
+      music.pause();
+      isPlaying = false;
+      musicToggle.textContent = "🎵 Bật nhạc";
+    }
+  });
 </script>
 
 </body>
