@@ -18,10 +18,8 @@
       justify-content: center;
       align-items: flex-start;
       padding: 40px 0;
-
       background: radial-gradient(circle at top, #ffdee9 0%, #b5fffc 100%);
       color: #222;
-
       overflow-x: hidden;
       overflow-y: auto;
     }
@@ -32,16 +30,14 @@
       padding: 20px;
       position: relative;
       z-index: 3;
-
       display: flex;
-      justify-content: center; /* căn giữa theo ngang */
+      justify-content: center;
     }
 
     .card {
       width: 100%;
-      max-width: 650px; /* thu nhỏ bề ngang khung trắng */
+      max-width: 650px;
       margin: 0 auto;
-
       background: rgba(255, 255, 255, 0.92);
       border-radius: 24px;
       padding: 28px 22px 30px;
@@ -185,11 +181,6 @@
       align-items: center;
       gap: 4px;
     }
-
-    .music-btn:hover {
-      transform: translateY(-1px);
-      opacity: 0.96;
-    }
   </style>
 </head>
 <body>
@@ -243,10 +234,13 @@
 </audio>
 
 <script>
-  // const targetDate = new Date(2025, 11, 12, 0, 0, 0); // dùng khi chạy thật
+  /* ===================== COUNTDOWN ===================== */
 
-  // 👉 TEST nhanh (10 giây)
-  const targetDate = new Date(Date.now() + 10000);
+  // 🔹 KHI TEST: đếm 10 giây
+  const targetTime = Date.now() + 10000;
+
+  // 🔹 KHI CHẠY THẬT: dùng dòng dưới, nhớ comment dòng trên
+  // const targetTime = new Date(2025, 11, 12, 0, 0, 0).getTime();
 
   const countdownSection = document.getElementById("countdown-section");
   const celebrationSection = document.getElementById("celebration-section");
@@ -303,7 +297,7 @@ Hẹn bae vào 12/1 – ngày sinh nhật trên giấy của tụi mình nữa n
 
   function updateCountdown() {
     const now = Date.now();
-    const distance = targetDate.getTime() - now;
+    const distance = targetTime - now; // dùng số ms, không cần getTime()
 
     if (distance <= 0) {
       startCelebration();
@@ -333,7 +327,8 @@ Hẹn bae vào 12/1 – ngày sinh nhật trên giấy của tụi mình nữa n
   const countdownInterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // FIREWORKS
+  /* ===================== FIREWORKS ===================== */
+
   const canvas = document.getElementById("fireworks-canvas");
   const ctx = canvas.getContext("2d");
   let particles = [];
@@ -400,7 +395,8 @@ Hẹn bae vào 12/1 – ngày sinh nhật trên giấy của tụi mình nữa n
     updateFireworks();
   }
 
-  // FLOATING PHOTOS
+  /* ===================== FLOATING PHOTOS ===================== */
+
   const floatingContainer = document.getElementById("floating-photos-container");
 
   const floatingImages = [
@@ -451,7 +447,8 @@ Hẹn bae vào 12/1 – ngày sinh nhật trên giấy của tụi mình nữa n
     });
   }
 
-  // MUSIC
+  /* ===================== MUSIC ===================== */
+
   const music = document.getElementById("bg-music");
   const toggle = document.getElementById("music-toggle");
   let isPlaying = false;
