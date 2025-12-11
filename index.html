@@ -394,7 +394,7 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
     "anh7.jpg",
     "anh8.jpg",
     "anh9.jpg",
-    "anh10.jpg"
+    "anh10.jpg",
     "anh11.jpg",
     "anh12.jpg",
     "anh13.jpg",
@@ -404,7 +404,7 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
     "anh17.jpg",
     "anh18.jpg",
     "anh19.jpg",
-    "anh20.jpg"
+    "anh20.jpg",
     "anh21.jpg",
     "anh22.jpg",
     "anh23.jpg",
@@ -418,46 +418,44 @@ tin em, thương em, và mong được đi cùng em thật lâu. 💗`;
   ];
 
   function startFloatingPhotos() {
-  floatingContainer.innerHTML = "";
+    floatingContainer.innerHTML = "";
 
-  const MAX_VISIBLE = 14;      // tối đa bao nhiêu ảnh bay cùng lúc
-  const LANES = 8;             // chia màn hình thành 8 lane ngang
-  const imgs = [...floatingImages];
+    const MAX_VISIBLE = 14;      // tối đa bao nhiêu ảnh bay cùng lúc
+    const LANES = 8;             // chia màn hình thành 8 lane ngang
+    const imgs = [...floatingImages];
 
-  // Nếu nhiều hơn MAX_VISIBLE thì random chọn bớt
-  if (imgs.length > MAX_VISIBLE) {
-    imgs.sort(() => Math.random() - 0.5);
+    // Nếu nhiều hơn MAX_VISIBLE thì random chọn bớt
+    if (imgs.length > MAX_VISIBLE) {
+      imgs.sort(() => Math.random() - 0.5);
+    }
+    const toShow = imgs.slice(0, Math.min(MAX_VISIBLE, imgs.length));
+
+    const laneWidth = 90 / LANES;
+    const laneCenters = Array.from({ length: LANES }, (_, i) =>
+      5 + laneWidth * i + laneWidth / 2
+    );
+
+    toShow.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.className = "floating-photo";
+
+      const laneIndex = index % LANES;
+      let center = laneCenters[laneIndex];
+
+      const jitter = (Math.random() - 0.5) * laneWidth * 0.4;
+      center = Math.min(95, Math.max(5, center + jitter));
+
+      const delay = Math.random() * 5;
+      const duration = 12 + Math.random() * 6;
+
+      img.style.left = center + "%";
+      img.style.animationDuration = duration + "s";
+      img.style.animationDelay = delay + "s";
+
+      floatingContainer.appendChild(img);
+    });
   }
-  const toShow = imgs.slice(0, Math.min(MAX_VISIBLE, imgs.length));
-
-  const laneWidth = 90 / LANES;
-  const laneCenters = Array.from({ length: LANES }, (_, i) =>
-    5 + laneWidth * i + laneWidth / 2
-  );
-
-  toShow.forEach((src, index) => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = "floating-photo";
-
-    // chọn lane theo vòng tròn: 0→1→2→...→LANES-1→0→...
-    const laneIndex = index % LANES;
-    let center = laneCenters[laneIndex];
-
-    // cho lệch nhẹ để trông tự nhiên
-    const jitter = (Math.random() - 0.5) * laneWidth * 0.4;
-    center = Math.min(95, Math.max(5, center + jitter));
-
-    const delay = Math.random() * 5;
-    const duration = 12 + Math.random() * 6;
-
-    img.style.left = center + "%";
-    img.style.animationDuration = duration + "s";
-    img.style.animationDelay = delay + "s";
-
-    floatingContainer.appendChild(img);
-  });
-}
 
 
 
